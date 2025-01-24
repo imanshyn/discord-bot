@@ -86,3 +86,5 @@ docker run -e BOT_TOKEN=YOUR_BOT_TOKEN discord-bot
 - `/leave` - Bot leaves the voice channel.
 - `/play <YouTube URL>` - Bot plays audio from the provided YouTube link.
 - `/skip` - Skips the current playing audio.
+- `/stop` - Stops the current playing audio.
+- `/resume` - Resumes stopped audio.
