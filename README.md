@@ -49,6 +49,25 @@ This is a Discord bot written in Python using the `discord.py` library. The bot 
 
 5. Replace `BOT_TOKEN` in [bot.py](http://_vscodecontentref_/0) with your actual bot token.
 
+## Adding the Bot to a Server
+
+To add your bot to a server, follow these steps:
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and select your application.
+2. Navigate to the "OAuth2" tab.
+3. Under "OAuth2 URL Generator", select the `bot` scope.
+4. Under "OAuth2 URL Generator", select the necessary permissions for your bot.
+5. Copy the generated URL and paste it into your browser.
+6. Select the server you want to add the bot to and authorize it.
+
+For more detailed instructions, refer to the [Discord.js Guide](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links).
+
+## Getting the Bot Token
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and select your application.
+2. Navigate to the "Bot" tab.
+3. Click "Copy" under the "TOKEN" section to get your bot token.
+
 ## Running the Bot
 
 To run the bot, use the following command:
@@ -56,7 +75,14 @@ To run the bot, use the following command:
 python bot.py
 ```
 To run the bot as Docker container, use the following command:
-
 ```bash
 docker build -t discord-bot .
 docker run -e BOT_TOKEN=YOUR_BOT_TOKEN discord-bot
+```
+
+## Management Commands
+
+- `/join` - Bot joins the voice channel.
+- `/leave` - Bot leaves the voice channel.
+- `/play <YouTube URL>` - Bot plays audio from the provided YouTube link.
+- `/skip` - Skips the current playing audio.

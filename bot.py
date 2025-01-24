@@ -44,7 +44,6 @@ async def skip(ctx):
 @bot.command()
 async def play(ctx, url):
     await queue.put(url)
-    await ctx.send(f"Added to queue: {url}")
     if not ctx.voice_client.is_playing():
         await play_next(ctx)
 
@@ -58,14 +57,40 @@ async def play_next(ctx):
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }],
+            'playlistend': 1,
+            'playlist_items': '1-5'
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            url2 = info['url']
+            if '_type' in info and info['_type'] == 'playlist':
+                if len(info['entries']) > 0:
+                    url2 = info['entries'][0]['url']
+                    for entry in info['entries'][1:]:
+                        await queue.put(entry['url'])
+                else:
+                    await ctx.send("No entries found in the playlist.")
+            else:
+                url2 = info['url']
             source = await discord.FFmpegOpusAudio.from_probe(url2)
             ctx.voice_client.play(source, after=lambda e: bot.loop.create_task(play_next(ctx)))
     else:
         await ctx.send("Queue is empty.")
+
+@bot.command()
+async def stop(ctx):
+    if ctx.voice_client.is_playing():
+        ctx.voice_client.pause()
+        await ctx.send("Playback stopped.")
+    else:
+        await ctx.send("No track is currently playing.")
+
+@bot.command()
+async def resume(ctx):
+    if ctx.voice_client.is_paused():
+        ctx.voice_client.resume()
+        await ctx.send("Playback resumed.")
+    else:
+        await ctx.send("No track is currently paused.")
 
 bot.run(os.getenv('BOT_TOKEN'))
